@@ -1,0 +1,5 @@
+@media (max-width: 991px) {
+    .offcanvas-start {
+      width: 250px !important;  /* Adjust the width to a smaller value */
+    }
+  }

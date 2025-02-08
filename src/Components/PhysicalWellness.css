@@ -1,0 +1,59 @@
+.wellness-container {
+    padding: 20px;
+    margin-top: 30px;
+  }
+  
+  .wellness-container h2 {
+    text-align: center;
+  }
+  
+  .wellness-container input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .wellness-container button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .wellness-container button:hover {
+    background-color: #0056b3;
+  }
+  
+  .data {
+    margin-top: 20px;
+  }
+  
+  .data div {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+  }
+  
+  .data button {
+    background-color: #ffc107;
+    margin-right: 10px;
+  }
+  
+  .data button:hover {
+    background-color: #e0a800;
+  }
+  
+  @media (max-width: 768px) {
+    .wellness-container input,
+    .wellness-container button {
+      width: 100%;
+      margin: 5px 0;
+    }
+  
+    .data div {
+      margin: 5px 0;
+      padding: 8px;
+    }
+  }
