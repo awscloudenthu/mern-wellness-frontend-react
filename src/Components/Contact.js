@@ -28,8 +28,8 @@ function Contact () {
             <Card.Body>
               <Card.Title><FaEnvelope /> Email</Card.Title>
                 <ListGroup>
-                  <ListGroup.Item>contact@company.com</ListGroup.Item>
-                  <ListGroup.Item>support@company.com</ListGroup.Item>
+                  <ListGroup.Item>awscloudenthu@gmail.com</ListGroup.Item>
+                  <ListGroup.Item>awscloudenthu@gmail.com</ListGroup.Item>
                 </ListGroup>
               <Button variant="primary" href="mailto:contact@company.com">Send Email</Button>
             </Card.Body>
