@@ -2,7 +2,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Button} from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 const Hero = () => {
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ const Hero = () => {
     return (
         <section className="hero bg-primary text-white text-center py-5"
             style={{
-                backgroundImage: `url(/images/hero2.jpg)`,
+                backgroundImage: `url(/images/hero1.jpg)`,
                 backgroundSize: '100% 100%',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center center'

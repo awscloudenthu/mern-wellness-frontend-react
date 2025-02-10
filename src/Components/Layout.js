@@ -1,5 +1,5 @@
 import React from 'react';
- 
+
 import { Outlet, useLocation } from 'react-router-dom';
 import Navigation from "./Navigation";
 import Hero from './Hero';

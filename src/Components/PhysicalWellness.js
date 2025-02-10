@@ -8,19 +8,18 @@ import axios from "axios";
 
 const PhysicalWellness = () => {
   const [data, setData] = useState([]);
-  // const [newEntry, setNewEntry] = useState({ id: null, date: null, steps: "", calories: "" });
   const [newEntry, setNewEntry] = useState({ _id: null, userId: null, date: null, steps: "", calories: "" });
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "date", direction: "desc" }); // Default sorting by date (desc)
   const userId = "seeded";  //Hardcoded until AWS Cognito userpool is implemented to persist user data
+  const apiUrl = process.env.REACT_APP_API_URL;
 
-  //1. Running on express, mangodb, docker
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/api/health-data/${userId}`)
+      .get(`${apiUrl}/api/health-data/${userId}`)
       .then((response) => {
-        console.log("Jaya, I was successful in calling api ",  response.data);
+        console.log("Hey, I was successful in calling api ", response.data);
         setData(response.data); // Set state with the fetched data
       })
       .catch((error) => {
@@ -34,30 +33,24 @@ const PhysicalWellness = () => {
     if (!(date instanceof Date)) {
       date = new Date(date); // Convert to Date if it's not already a Date object
     }
-  
-    // Now we can safely call getTimezoneOffset on the date object
-    const timezoneOffset = date.getTimezoneOffset();
-    console.log('Timezone Offset: ', timezoneOffset);
-    // Additional formatting logic...
-    
     return date.toISOString().split('T')[0]; // Return the date in 'yyyy-mm-dd' format
   };
 
-// Function to parse yyyy-mm-dd without UTC conversion
-const parseDateWithoutUTC = (dateString) => {
-  // If the date is already a Date object, convert it to a string in 'yyyy-mm-dd' format
-  if (dateString instanceof Date) {
-    dateString = dateString.toISOString().split('T')[0];  // Convert to 'yyyy-mm-dd' string format
-  }
+  // Function to parse yyyy-mm-dd without UTC conversion
+  const parseDateWithoutUTC = (dateString) => {
+    // If the date is already a Date object, convert it to a string in 'yyyy-mm-dd' format
+    if (dateString instanceof Date) {
+      dateString = dateString.toISOString().split('T')[0];  // Convert to 'yyyy-mm-dd' string format
+    }
 
-  if (!dateString || typeof dateString !== 'string') {
-    console.error("Invalid dateString:", dateString);  // For debugging
-    return null;
-  }
+    if (!dateString || typeof dateString !== 'string') {
+      console.error("Invalid dateString:", dateString);  // For debugging
+      return null;
+    }
 
-  const [year, month, day] = dateString.split('-');
-  return new Date(year, month - 1, day);
-};
+    const [year, month, day] = dateString.split('-');
+    return new Date(year, month - 1, day);
+  };
   //
   // Add or Update Entry
   // For now, the data is only changed in the browser. Once the AWS Cognito user pool is implemented, it will persist in mangodb
@@ -76,12 +69,12 @@ const parseDateWithoutUTC = (dateString) => {
       return;
     }
 
-    if (!newEntry._id){
-      newEntry._id =  uuidv4();  
+    if (!newEntry._id) {
+      newEntry._id = uuidv4();
     }
-  
+
     let updatedData;
-     
+
     const newEntryFormatted = {
       ...newEntry,
       date: formatDate(newEntry.date) // Ensure it's saved as yyyy-mm-dd
@@ -90,9 +83,8 @@ const parseDateWithoutUTC = (dateString) => {
       updatedData = data.map((entry) => (entry._id === newEntryFormatted._id ? newEntryFormatted : entry));
     } else {
       updatedData = [...data, { ...newEntryFormatted, userId: "seeded" }];  // For now 
-      console.log ("Jaya, updated data for new row =" , updatedData);
     }
-  
+
     // Sort the data according to the current sortConfig
     updatedData = updatedData.sort((a, b) => {
       if (sortConfig.key === "date") {
@@ -104,7 +96,7 @@ const parseDateWithoutUTC = (dateString) => {
         ? Number(a[sortConfig.key]) - Number(b[sortConfig.key])
         : Number(b[sortConfig.key]) - Number(a[sortConfig.key]);
     });
-  
+
     setData(updatedData);
     resetForm();
   };
@@ -126,7 +118,7 @@ const parseDateWithoutUTC = (dateString) => {
   // Reset form
   const resetForm = () => {
     // setNewEntry({ id: null, date: null, steps: "", calories: "" });
-    setNewEntry({ _id: null, userId:null, date: null, steps: "", calories: "" });
+    setNewEntry({ _id: null, userId: null, date: null, steps: "", calories: "" });
     setEditMode(false);
     setError("");
   };
@@ -157,17 +149,17 @@ const parseDateWithoutUTC = (dateString) => {
         <h5 className="mb-3">{editMode ? "Edit Entry" : "Add New Entry"}</h5>
         <div className="row g-2">
           <div className="col-12 col-md-4">
-          <DatePicker
-  selected={newEntry.date ? parseDateWithoutUTC(newEntry.date) : null}
-  onChange={(date) => {
-    const formattedDate = formatDate(date);  // Convert to yyyy-mm-dd for saving
-    setNewEntry({ ...newEntry, date: formattedDate });
-    setError("");
-  }}
-  className="form-control"
-  placeholderText="Select a date"
-  dateFormat="yyyy-MM-dd"  // Display format
-/>
+            <DatePicker
+              selected={newEntry.date ? parseDateWithoutUTC(newEntry.date) : null}
+              onChange={(date) => {
+                const formattedDate = formatDate(date);  // Convert to yyyy-mm-dd for saving
+                setNewEntry({ ...newEntry, date: formattedDate });
+                setError("");
+              }}
+              className="form-control"
+              placeholderText="Select a date"
+              dateFormat="yyyy-MM-dd"  // Display format
+            />
           </div>
           <div className="col-12 col-md-4">
             <input

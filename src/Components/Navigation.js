@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Nav, Container, Offcanvas } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import './NavbarStyle.css';  
+import './NavbarStyle.css';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false); // For controlling the sidebar (side menu)
@@ -15,9 +15,9 @@ const Navigation = () => {
       <Navbar bg="light" expand="lg">
         <Container fluid>
           {/* Hamburger icon only for mobile */}
-          <Navbar.Toggle 
-            className="d-block d-lg-none" 
-            onClick={toggleSidebar} 
+          <Navbar.Toggle
+            className="d-block d-lg-none"
+            onClick={toggleSidebar}
             aria-controls="navbar-nav"
           />
 
@@ -28,10 +28,13 @@ const Navigation = () => {
                 <Nav.Link as={Link} to="/">Home</Nav.Link>
               </Nav.Item>
               <Nav.Item>
+                <Nav.Link as={Link} to="/about">About</Nav.Link>
+              </Nav.Item>
+              <Nav.Item>
                 <Nav.Link as={Link} to="/WellnessTracker">Wellness</Nav.Link>
               </Nav.Item>
               <Nav.Item>
-                <Nav.Link as={Link} to="/about">About</Nav.Link>
+                <Nav.Link as={Link} to="/stack">Stack</Nav.Link>
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
@@ -49,10 +52,13 @@ const Navigation = () => {
               <Nav.Link as={Link} to="/" onClick={toggleSidebar}>Home</Nav.Link>
             </Nav.Item>
             <Nav.Item>
+              <Nav.Link as={Link} to="/about" onClick={toggleSidebar}>About</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
               <Nav.Link as={Link} to="/WellnessTracker" onClick={toggleSidebar}>Wellness</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link as={Link} to="/about" onClick={toggleSidebar}>About</Nav.Link>
+              <Nav.Link as={Link} to="/stack" onClick={toggleSidebar}>Stack</Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link as={Link} to="/contact" onClick={toggleSidebar}>Contact</Nav.Link>
