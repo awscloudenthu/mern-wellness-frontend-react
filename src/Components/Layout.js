@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Outlet, useLocation } from 'react-router-dom';
 import Navigation from "./Navigation";
 import Hero from './Hero';
@@ -9,7 +8,12 @@ const Layout = () => {
     return (
         <>
             <Navigation />
-            {location.pathname === "/" && <Hero />}
+            {(location.pathname === "/" ||
+                location.pathname === "/signin" ||
+                location.pathname === "/signup" ||
+                location.pathname === "/signout" ||
+                location.pathname === "/about")
+                && <Hero />}
             <div>
                 <Outlet />
             </div>

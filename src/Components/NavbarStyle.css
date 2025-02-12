@@ -1,5 +1,36 @@
-@media (max-width: 991px) {
-    .offcanvas-start {
-      width: 250px !important;  /* Adjust the width to a smaller value */
-    }
-  }
+/* Navbar Custom Styles */
+.navbar-custom {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Offcanvas Custom Styles */
+.offcanvas-custom {
+  width: 250px; /* Adjust width as needed */
+  background-color: #f8f9fa; /* Light background for sidebar */
+}
+
+/* Sidebar Links */
+.offcanvas-custom .nav-link {
+  padding: 10px 15px;
+  color: #333;
+}
+
+.offcanvas-custom .nav-link:hover {
+  background-color: #e9ecef;
+}
+
+
+
+.user-info {
+  border-bottom: 1px solid #ddd; /* Add a separator */
+  margin-bottom: 1rem; /* Space between user info and menu */
+}
+
+.user-info .small {
+  font-size: 0.875rem; /* Smaller text for "Logged in as" */
+}
+
+.user-info .fw-bold {
+  font-size: 1rem; /* Larger text for email */
+}

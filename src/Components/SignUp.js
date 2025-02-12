@@ -1,35 +1,29 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { useUser } from './UserContext'; // Import useUser hook
-import { signIn } from './AuthService';
+import { signUp } from './AuthService';
+import { Link } from 'react-router-dom';  // Import Link here
 
-const SignIn = () => {
+const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const { setUser } = useUser();  // Get setUser from the context
-  const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
 
-  const handleSignIn = (e) => {
+  const handleSignUp = (e) => {
     e.preventDefault();
-    signIn(email, password, (err, session) => {
+    signUp(email, password, (err, result) => {
       if (err) {
-        setMessage(`Sign-in failed: ${err.message}`);
+        setMessage(`Sign-up failed: ${err.message}`);
       } else {
-        setUser({ email });  // Store the signed-in user's email in context
-        setMessage('Sign-in successful!');
-        navigate(from, { replace: true });
+        setMessage('Sign-up successful! Please check your email to confirm your account.');
       }
     });
   };
 
   return (
     <div className="container d-flex justify-content-center align-items-center" style={{ marginTop: '20px' }}>
+
       <div className="card p-4" style={{ maxWidth: '400px', width: '100%' }}>
-        <h2 className="text-center mb-4">Sign In</h2>
-        <form onSubmit={handleSignIn}>
+        <h2 className="text-center mb-4">Sign Up</h2>
+        <form onSubmit={handleSignUp}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email:</label>
             <input
@@ -52,15 +46,15 @@ const SignIn = () => {
               required
             />
           </div>
-          <button type="submit" className="btn btn-primary w-100 mb-3">Sign In</button>
+          <button type="submit" className="btn btn-primary w-100 mb-3">Sign Up</button>
         </form>
         {message && <p className="text-center text-danger">{message}</p>}
         <div className="text-center">
-          <p>Don't have an account? <Link to="/signup" className="link-primary">Sign Up</Link></p>
+          <p>Already have an account? <Link to="/signin" className="link-primary">Sign In</Link></p>
         </div>
       </div>
     </div>
   );
 };
 
-export default SignIn;
+export default SignUp;

@@ -1,68 +1,91 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, Offcanvas } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useUser } from './UserContext';
+import { getCurrentUser, signOut } from './AuthService';
 import './NavbarStyle.css';
 
 const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(false); // For controlling the sidebar (side menu)
+  const [isOpen, setIsOpen] = useState(false); // State to manage sidebar visibility
+  const { user, setUser } = useUser(); // Get user from context
+  const navigate = useNavigate(); // Navigation hook
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
+  // Load current user on mount
+  useEffect(() => {
+    const currentUser = getCurrentUser();
+    setUser(currentUser || null);
+  }, [setUser]);
+
+  // Handle user sign-out
+  const handleSignOut = () => {
+    setUser(null);
+    signOut();
+    setIsOpen(false); // Close sidebar on sign-out
+    navigate('/signin');
   };
 
   return (
     <>
-      <Navbar bg="light" expand="lg">
+      {/* Navbar */}
+      <Navbar bg="light" expand="lg" className="navbar-custom">
         <Container fluid>
-          {/* Hamburger icon only for mobile */}
-          <Navbar.Toggle
-            className="d-block d-lg-none"
-            onClick={toggleSidebar}
-            aria-controls="navbar-nav"
-          />
-
-          {/* Desktop navigation links */}
-          <Navbar.Collapse id="navbar-nav" className="d-none d-lg-flex">
-            <Nav className="ms-auto fs-6">
-              <Nav.Item>
-                <Nav.Link as={Link} to="/">Home</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link as={Link} to="/about">About</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link as={Link} to="/WellnessTracker">Wellness</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link as={Link} to="/stack">Stack</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
-              </Nav.Item>
+          {/* <Navbar.Brand as={Link} to="/">MyApp</Navbar.Brand> */}
+          {/* Hamburger Toggle for Mobile */}
+          <Navbar.Toggle aria-controls="offcanvas-nav" onClick={() => setIsOpen(true)} />
+          {/* Navbar Links for Desktop */}
+          <Navbar.Collapse id="navbar-nav" className="d-none d-lg-block">
+            <Nav className="me-auto">
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/about">About</Nav.Link>
+              <Nav.Link as={Link} to="/wellnesstracker">Wellness</Nav.Link>
+              <Nav.Link as={Link} to="/stack">Stack</Nav.Link>
+              <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
+            </Nav>
+            <Nav className="ms-auto">
+              {user ? (
+                <>
+                  <div className="navbar-text text-muted">Welcome {user.email}</div>
+                  <Nav.Link as={Link} to="#" onClick={handleSignOut}>Sign Out</Nav.Link>
+                </>
+              ) : (
+                <Nav.Link as={Link} to="/signin">Sign In</Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
 
       {/* Sidebar for Mobile */}
-      <Offcanvas show={isOpen} onHide={toggleSidebar} placement="start" className="offcanvas-start d-lg-none">
+      <Offcanvas
+        show={isOpen}
+        onHide={() => setIsOpen(false)}
+        placement="start"
+        className="offcanvas-custom"
+      >
+        <Offcanvas.Header closeButton>
+          {/* <Offcanvas.Title>Menu</Offcanvas.Title> */}
+        </Offcanvas.Header>
         <Offcanvas.Body>
+          {/* User Information Section */}
+          {user && (
+            <div className="user-info mb-3 p-3 bg-light rounded">
+              <div className="text-muted navbar-text">Welcome {user.email}</div>
+              
+            </div>
+          )}
+
+          {/* Menu Links */}
           <Nav className="flex-column">
-            <Nav.Item>
-              <Nav.Link as={Link} to="/" onClick={toggleSidebar}>Home</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link as={Link} to="/about" onClick={toggleSidebar}>About</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link as={Link} to="/WellnessTracker" onClick={toggleSidebar}>Wellness</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link as={Link} to="/stack" onClick={toggleSidebar}>Stack</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link as={Link} to="/contact" onClick={toggleSidebar}>Contact</Nav.Link>
-            </Nav.Item>
+            <Nav.Link as={Link} to="/" onClick={() => setIsOpen(false)}>Home</Nav.Link>
+            <Nav.Link as={Link} to="/about" onClick={() => setIsOpen(false)}>About</Nav.Link>
+            <Nav.Link as={Link} to="/wellnesstracker" onClick={() => setIsOpen(false)}>Wellness</Nav.Link>
+            <Nav.Link as={Link} to="/stack" onClick={() => setIsOpen(false)}>Stack</Nav.Link>
+            <Nav.Link as={Link} to="/contact" onClick={() => setIsOpen(false)}>Contact</Nav.Link>
+            {user ? (
+              <Nav.Link as={Link} to="#" onClick={handleSignOut}>Sign Out</Nav.Link>
+            ) : (
+              <Nav.Link as={Link} to="/signin" onClick={() => setIsOpen(false)}>Sign In</Nav.Link>
+            )}
           </Nav>
         </Offcanvas.Body>
       </Offcanvas>

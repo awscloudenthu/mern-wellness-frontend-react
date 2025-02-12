@@ -3,7 +3,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { v4 as uuidv4 } from "uuid";  // Reguired until data is persisted in mangodb
-
 import axios from "axios";
 
 const PhysicalWellness = () => {
@@ -19,7 +18,7 @@ const PhysicalWellness = () => {
     axios
       .get(`${apiUrl}/api/health-data/${userId}`)
       .then((response) => {
-        console.log("Hey, I was successful in calling api ", response.data);
+        console.log("Hey, I was successful in calling api from", apiUrl, " " ,response.data);
         setData(response.data); // Set state with the fetched data
       })
       .catch((error) => {
@@ -143,7 +142,6 @@ const PhysicalWellness = () => {
   return (
     <div className="container mt-4">
       <h2 className="text-center mb-4">Physical Wellness Tracker</h2>
-
       {/* Add or Edit Form */}
       <div className="card p-3 mb-4">
         <h5 className="mb-3">{editMode ? "Edit Entry" : "Add New Entry"}</h5>
