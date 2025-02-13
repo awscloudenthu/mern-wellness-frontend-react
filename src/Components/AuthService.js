@@ -2,7 +2,7 @@ import { CognitoUserPool, CognitoUser, AuthenticationDetails } from 'amazon-cogn
 
 const poolData = {
   UserPoolId: process.env.REACT_APP_UserPoolId,
-  ClientId: process.env.REACT_APP_ClientId
+  ClientId: process.env.REACT_APP_ClientId 
 };
 
 const userPool = new CognitoUserPool(poolData);
@@ -27,7 +27,12 @@ export const signIn = (email, password, callback) => {
 
   user.authenticateUser(authDetails, {
     onSuccess: (session) => {
-      console.log('Sign-in success:', session);
+     
+      const idToken = session.getIdToken().decodePayload();
+      const userId = idToken['cognito:username'];  // Cognito's default claim for username
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("userEmail", email);
+      
       callback(null, session);
     },
     onFailure: (err) => {
@@ -47,7 +52,8 @@ export const signOut = () => {
   const user = getCurrentUser();
   if (user) {
     user.signOut();
-    console.log('User signed out.');
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userEmail");
   } else {
     console.log('No user is currently signed in.');
   }

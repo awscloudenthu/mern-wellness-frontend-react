@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
-import { UserProvider } from "./Components/UserContext";
 import Home from "./Components/Home";
 import About from "./Components/About";
 import Stack from "./Components/Stack";
@@ -47,14 +46,13 @@ const PrivateRoute = ({ children }) => {
 
 function App() {
   return (
-    <UserProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="/about" element={<About />} />
             {/* Wrap WellnessTracker with PrivateRoute */}
-            <Route path="/WellnessTracker" element={
+            <Route path="/wellnesstracker" element={
               <PrivateRoute>
                 <WellnessTracker />
               </PrivateRoute>
@@ -67,7 +65,6 @@ function App() {
           </Route>
         </Routes>
       </BrowserRouter>
-    </UserProvider>
   );
 }
 

@@ -1,24 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Navbar, Nav, Container, Offcanvas } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-import { useUser } from './UserContext';
-import { getCurrentUser, signOut } from './AuthService';
+import { signOut } from './AuthService';
 import './NavbarStyle.css';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false); // State to manage sidebar visibility
-  const { user, setUser } = useUser(); // Get user from context
+  const user = localStorage.getItem("userEmail");
   const navigate = useNavigate(); // Navigation hook
-
-  // Load current user on mount
-  useEffect(() => {
-    const currentUser = getCurrentUser();
-    setUser(currentUser || null);
-  }, [setUser]);
 
   // Handle user sign-out
   const handleSignOut = () => {
-    setUser(null);
     signOut();
     setIsOpen(false); // Close sidebar on sign-out
     navigate('/signin');
@@ -44,7 +36,7 @@ const Navigation = () => {
             <Nav className="ms-auto">
               {user ? (
                 <>
-                  <div className="navbar-text text-muted">Welcome {user.email}</div>
+                  <div className="navbar-text text-muted">Welcome {user}</div>
                   <Nav.Link as={Link} to="#" onClick={handleSignOut}>Sign Out</Nav.Link>
                 </>
               ) : (
@@ -69,8 +61,8 @@ const Navigation = () => {
           {/* User Information Section */}
           {user && (
             <div className="user-info mb-3 p-3 bg-light rounded">
-              <div className="text-muted navbar-text">Welcome {user.email}</div>
-              
+              <div className="text-muted navbar-text">Welcome {user}</div>
+
             </div>
           )}
 

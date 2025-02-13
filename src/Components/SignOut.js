@@ -11,10 +11,6 @@ const SignOut = () => {
             currentUser.signOut();
             console.log("User signed out successfully");
         }
-
-        // Optionally, clear any other authentication tokens or localStorage data here
-        localStorage.removeItem("your-auth-token");
-
         // Redirect to the sign-in page
         navigate("/signin");
     };

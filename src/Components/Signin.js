@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { useUser } from './UserContext'; // Import useUser hook
 import { signIn } from './AuthService';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
-  const { setUser } = useUser();  // Get setUser from the context
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
@@ -18,7 +16,6 @@ const SignIn = () => {
       if (err) {
         setMessage(`Sign-in failed: ${err.message}`);
       } else {
-        setUser({ email });  // Store the signed-in user's email in context
         setMessage('Sign-in successful!');
         navigate(from, { replace: true });
       }
