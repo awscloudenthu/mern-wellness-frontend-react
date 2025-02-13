@@ -45,15 +45,14 @@ const PhysicalWellness = () => {
     if (dateString instanceof Date) {
       dateString = dateString.toISOString().split('T')[0];  // Convert to 'yyyy-mm-dd' string format
     }
-
     if (!dateString || typeof dateString !== 'string') {
       console.error("Invalid dateString:", dateString);  // For debugging
       return null;
     }
-
     const [year, month, day] = dateString.split('-');
     return new Date(year, month - 1, day);
   };
+
   const handleSort = (key) => {
     const direction = sortConfig.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
     setSortConfig({ key, direction });
@@ -62,7 +61,6 @@ const PhysicalWellness = () => {
       if (key === "date") return direction === "asc" ? new Date(a[key]) - new Date(b[key]) : new Date(b[key]) - new Date(a[key]);
       return direction === "asc" ? Number(a[key]) - Number(b[key]) : Number(b[key]) - Number(a[key]);
     });
-
     setData(sortedData);
   };
 
@@ -122,6 +120,7 @@ const PhysicalWellness = () => {
 
   // --- Render Function ---
   return (
+
     <div className="container mt-4">
       <h2 className="text-center mb-4">Physical Wellness Tracker</h2>
       <div className="card p-3 mb-4">
@@ -130,7 +129,6 @@ const PhysicalWellness = () => {
           <div className="col-12 col-md-4">
             <DatePicker
               selected={newEntry.date ? parseDateWithoutUTC(newEntry.date) : null}
-            //  onChange={(date) => setNewEntry({ ...newEntry, date })}
               onChange={(date) => {
                 const formattedDate = formatDate(date);  // Convert to yyyy-mm-dd for saving
                 setNewEntry({ ...newEntry, date: formattedDate });
@@ -139,6 +137,7 @@ const PhysicalWellness = () => {
               className="form-control"
               placeholderText="Select a date"
               dateFormat="yyyy-MM-dd"
+              maxDate={new Date()}  // Restrict date until today
             />
           </div>
           <div className="col-12 col-md-4">
